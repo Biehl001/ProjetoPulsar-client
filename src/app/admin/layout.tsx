@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { LayoutDashboard, UserCheck, Building2 } from "lucide-react";
+import { LayoutDashboard, UserCheck, Building2, MessageSquare } from "lucide-react";
 import { getProfile } from "@/lib/auth/get-profile";
 import { AppShell, type AppShellNavItem } from "@/components/app/app-shell";
 
@@ -18,6 +18,11 @@ const navItems: AppShellNavItem[] = [
     href: "/admin/empresas",
     label: "Empresas",
     icon: <Building2 className="size-4" />,
+  },
+  {
+    href: "/admin/feedbacks",
+    label: "Feedbacks",
+    icon: <MessageSquare className="size-4" />,
   },
 ];
 

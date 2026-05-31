@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Clock,
   MapPin,
+  MessageSquare,
 } from "lucide-react";
 import { getProfileWithEmpresa, type Empresa } from "@/lib/auth/get-profile";
 import { createClient } from "@/lib/supabase/server";
@@ -37,10 +38,16 @@ export default async function PainelHome() {
   const firstName = (profile.nome.split(" ")[0] || profile.nome).trim();
   const supabase = await createClient();
 
-  const { count: certsCount } = await supabase
-    .from("certificados_emitidos")
-    .select("id", { count: "exact", head: true })
-    .eq("profile_id", profile.id);
+  const [{ count: certsCount }, { count: feedbacksCount }] = await Promise.all([
+    supabase
+      .from("certificados_emitidos")
+      .select("id", { count: "exact", head: true })
+      .eq("profile_id", profile.id),
+    supabase
+      .from("feedbacks")
+      .select("id", { count: "exact", head: true })
+      .eq("profile_id", profile.id),
+  ]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -84,6 +91,11 @@ export default async function PainelHome() {
       ) : (
         <SemEmpresaCard />
       )}
+
+      {/* Feedback */}
+      <section>
+        <FeedbackCard count={feedbacksCount ?? 0} />
+      </section>
 
       {/* Stats row */}
       <section>
@@ -217,6 +229,50 @@ function CertificadoCard({
         Acessar certificado
         <ArrowUpRight className="size-4" />
       </Link>
+    </div>
+  );
+}
+
+function FeedbackCard({ count }: { count: number }) {
+  return (
+    <div className="relative flex flex-col gap-4 overflow-hidden border border-border bg-card p-6 lg:flex-row lg:items-center lg:justify-between lg:p-7">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-10 -top-10 size-32 rotate-45 border border-primary/15"
+      />
+
+      <div className="flex items-start gap-4">
+        <div className="flex size-11 shrink-0 items-center justify-center bg-primary text-primary-foreground">
+          <MessageSquare className="size-5" />
+        </div>
+        <div className="flex flex-col gap-1">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+            Sua opinião importa
+          </p>
+          <h2 className="text-xl font-bold uppercase leading-[1.1] tracking-tight md:text-2xl">
+            Deixe seu depoimento.
+          </h2>
+          <p className="max-w-xl text-sm text-muted-foreground">
+            Conte como foi sua experiência com o Projeto Pulsar. Após aprovação,
+            seu depoimento pode aparecer no site.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 lg:flex-col lg:items-end">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+          {count} envio{count !== 1 ? "s" : ""}
+        </span>
+        <Link
+          href="/painel/feedback"
+          className={buttonVariants({
+            className: "gap-2 bg-primary text-primary-foreground hover:bg-primary/90",
+          })}
+        >
+          Enviar feedback
+          <ArrowUpRight className="size-4" />
+        </Link>
+      </div>
     </div>
   );
 }

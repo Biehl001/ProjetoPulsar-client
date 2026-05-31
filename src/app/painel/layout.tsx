@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Home, Award } from "lucide-react";
+import { Home, Award, MessageSquare } from "lucide-react";
 import { getProfile } from "@/lib/auth/get-profile";
 import { AppShell, type AppShellNavItem } from "@/components/app/app-shell";
 
@@ -13,6 +13,11 @@ const navItems: AppShellNavItem[] = [
     href: "/painel/certificado",
     label: "Certificado",
     icon: <Award className="size-4" />,
+  },
+  {
+    href: "/painel/feedback",
+    label: "Feedback",
+    icon: <MessageSquare className="size-4" />,
   },
 ];
 
