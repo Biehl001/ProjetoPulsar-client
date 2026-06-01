@@ -4,7 +4,7 @@ import { About } from "@/components/landing/about";
 import { Nr1 } from "@/components/landing/nr1";
 import { Audiences } from "@/components/landing/audiences";
 import { Process } from "@/components/landing/process";
-import { Testimonials } from "@/components/landing/testimonials";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { PulsarProgram } from "@/components/landing/pulsar-program";
 import { Footer } from "@/components/landing/footer";
 import { WhatsAppFloat } from "@/components/landing/whatsapp-float";
@@ -18,7 +18,7 @@ export default function HomePage() {
         <About />
         <Nr1 />
         <Audiences />
-        <Testimonials />
+        <TestimonialsSection />
         <Process />
         <PulsarProgram />
       </main>
